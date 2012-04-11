@@ -104,7 +104,9 @@ fi
 
 %changelog
 * Thu Apr 12 2012 Alec Leamas <alec@nowhere.com> 1.2.0-2.20120412gite9390e7
+- Fixing source name error
 - Updating to latest git (fixing f17 compile error).
+
 * Sun Apr 01 2012 Alec Leamas <alec@nowhere.com> 1.2.0-1.20120401git2278251
 - New version-release scheme
 - Minor fixes
