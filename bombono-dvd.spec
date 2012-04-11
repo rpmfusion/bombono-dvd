@@ -2,7 +2,7 @@
 
 Name:           bombono-dvd
 Version:        1.2.0
-Release:        2%{rel_tag}%{?dist}
+Release:        3%{rel_tag}%{?dist}
 Summary:        DVD authoring program with nice and clean GUI
                 # License breakdown in README.
 License:        GPLv2 and GPLv2+ and Boost and Python and LGPLv2+
@@ -103,9 +103,12 @@ fi
 %{_mandir}/man1/*
 
 %changelog
-* Thu Apr 12 2012 Alec Leamas <alec@nowhere.com> 1.2.0-2.20120412gite9390e7
+* Thu Apr 12 2012 Alec Leamas <alec@nowhere.com> 1.2.0-3.20120412gite9390e7
 - Fixing source name error
 - Updating to latest git (fixing f17 compile error).
+
+* Thu Apr 12 2012 Alec Leamas <alec@nowhere.com> 1.2.0-2.20120412gite9390e7
+- Bad version, not built
 
 * Sun Apr 01 2012 Alec Leamas <alec@nowhere.com> 1.2.0-1.20120401git2278251
 - New version-release scheme
