@@ -1,8 +1,8 @@
-%global         rel_tag .20120401git2278251
+%global         rel_tag  .20120615gitcdab110
 
 Name:           bombono-dvd
 Version:        1.2.0
-Release:        1%{rel_tag}%{?dist}
+Release:        4%{rel_tag}%{?dist}
 Summary:        DVD authoring program with nice and clean GUI
                 # License breakdown in README.
 License:        GPLv2 and GPLv2+ and Boost and Python and LGPLv2+
@@ -10,9 +10,9 @@ Group:          Applications/Productivity
 Url:            http://www.bombono.org
 # To create source tarball:
 # git clone https://git.gitorious.org/bombono-dvd/bombono-dvd.git bombono-dvd
-# tag=.20120401git2278251; cd bombono-dvd;  git reset --hard ${tag##*git}; cd ..
-# tar czf bombono-dvd-1.2.0.20120401git2278251.tar.gz --exclude .git bombono-dvd
-Source:         bombono-dvd-%{version}.tar.gz
+# tag=.20120615gitcdab110; cd bombono-dvd;  git reset --hard ${tag##*git}; cd ..
+# tar czf bombono-dvd-1.2.0.20120615gitcdab110.tar.gz --exclude .git bombono-dvd
+Source:         bombono-dvd-%{version}.%{release}.tar.gz
 
 BuildRequires:  adobe-source-libraries-devel
 BuildRequires:  boost-devel
@@ -103,6 +103,17 @@ fi
 %{_mandir}/man1/*
 
 %changelog
+
+* Fri Jun 15 2012 Alec Leamas <alec@nowhere.com> 1.2.0-4.20120615gitcdab110
+- Updating to git HEAD, solving build problems w ffmpeg 11.1
+
+* Thu Apr 12 2012 Alec Leamas <alec@nowhere.com> 1.2.0-3.20120412gite9390e7
+- Fixing source name error
+- Updating to latest git (fixing f17 compile error).
+
+* Thu Apr 12 2012 Alec Leamas <alec@nowhere.com> 1.2.0-2.20120412gite9390e7
+- Bad version, not built
+
 * Sun Apr 01 2012 Alec Leamas <alec@nowhere.com> 1.2.0-1.20120401git2278251
 - New version-release scheme
 - Minor fixes
