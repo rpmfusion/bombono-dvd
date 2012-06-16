@@ -1,5 +1,5 @@
 %global         rel_tag      .20120616gitcdab110
-%global         rel_nr       5
+%global         rel_nr       6
 
 Name:           bombono-dvd
 Version:        1.2.0
@@ -105,7 +105,9 @@ fi
 
 %changelog
 
-* Sat Jun 16 2012 Alec Leamas <alec@nowhere.com> 1.2.0-5.20120616gitcdab110
+* Sat Jun 16 2012 Alec Leamas <alec@nowhere.com> 1.2.0-6.20120616gitcdab110
+- New try: updating to git HEAD, solving build problems w ffmpeg 11.1
+* Thu Apr 12 2012 Alec Leamas <alec@nowhere.com> 1.2.0-5.20120412gite9390e7
 - Really updating to git HEAD, solving build problems w ffmpeg 11.1
 * Thu Apr 12 2012 Alec Leamas <alec@nowhere.com> 1.2.0-4.20120412gite9390e7
 - Updating to git HEAD, solving build problems w ffmpeg 11.1
