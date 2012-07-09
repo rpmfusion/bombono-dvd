@@ -3,7 +3,7 @@
 
 Name:           bombono-dvd
 Version:        1.2.0
-Release:        %{rel_nr}%{rel_tag}%{?dist}.1
+Release:        %{rel_nr}%{rel_tag}%{?dist}.2
 Summary:        DVD authoring program with nice and clean GUI
                 # License breakdown in README.
 License:        GPLv2 and GPLv2+ and Boost and Python and LGPLv2+
@@ -14,6 +14,9 @@ Url:            http://www.bombono.org
 # tag=.20120616gitcdab110; cd bombono-dvd;  git reset --hard ${tag##*git}; cd ..
 # tar czf bombono-dvd-1.2.0.20120616gitcdab110.tar.gz --exclude .git bombono-dvd
 Source:         bombono-dvd-%{version}-%{rel_nr}%{rel_tag}.tar.gz
+
+# needs to match TBB - from adobe-source-libraries
+ExclusiveArch:  i686 x86_64 ia64
 
 BuildRequires:  adobe-source-libraries-devel
 BuildRequires:  boost-devel
@@ -104,6 +107,9 @@ fi
 %{_mandir}/man1/*
 
 %changelog
+* Mon Jul 09 2012 Nicolas Chauvet <kwizart@gmail.com> - 1.2.0-4.20120616gitcdab110.2
+- Add ExclusiveArch - inherited from TBB
+
 * Tue Jun 26 2012 Nicolas Chauvet <kwizart@gmail.com> - 1.2.0-4.20120616gitcdab110.1
 - Rebuilt for FFmpeg
 
