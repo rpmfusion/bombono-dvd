@@ -1,5 +1,5 @@
 %global         rel_tag      .20120616gitcdab110
-%global         rel_nr       4
+%global         rel_nr       5
 
 Name:           bombono-dvd
 Version:        1.2.0
@@ -107,6 +107,9 @@ fi
 %{_mandir}/man1/*
 
 %changelog
+* Tue Aug 21 2012 Alec Leamas <alec@nowhere.com>  - 1.2.0-5.20120616gitcdab110.2
+- Rebuild for F-18
+
 * Mon Jul 09 2012 Nicolas Chauvet <kwizart@gmail.com> - 1.2.0-4.20120616gitcdab110.2
 - Add ExclusiveArch - inherited from TBB
 
