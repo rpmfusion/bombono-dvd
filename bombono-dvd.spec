@@ -1,22 +1,20 @@
-%global         rel_tag      .20120616gitcdab110
-%global         rel_nr       5
+%global         rel_tag  .20120615gitcdab110
 
 Name:           bombono-dvd
 Version:        1.2.0
-Release:        %{rel_nr}%{rel_tag}%{?dist}.2
+Release:        6%{rel_tag}%{?dist}
 Summary:        DVD authoring program with nice and clean GUI
                 # License breakdown in README.
-License:        GPLv2 and GPLv2+ and Boost and Python and LGPLv2+
+LiceNse:        GPLv2 and GPLv2+ and Boost and Python and LGPLv2+
 Group:          Applications/Productivity
 Url:            http://www.bombono.org
 # To create source tarball:
 # git clone https://git.gitorious.org/bombono-dvd/bombono-dvd.git bombono-dvd
-# tag=.20120616gitcdab110; cd bombono-dvd;  git reset --hard ${tag##*git}; cd ..
-# tar czf bombono-dvd-1.2.0.20120616gitcdab110.tar.gz --exclude .git bombono-dvd
-Source:         bombono-dvd-%{version}-%{rel_nr}%{rel_tag}.tar.gz
-
-# needs to match TBB - from adobe-source-libraries
-ExclusiveArch:  i686 x86_64 ia64
+# tag=.20120615gitcdab110; cd bombono-dvd;  git reset --hard ${tag##*git}; cd ..
+# tar czf bombono-dvd-1.2.0$tag.tar.gz --exclude .git bombono-dvd
+Source:         bombono-dvd-%{version}%{?rel_tag}.tar.gz
+Patch0:         bombono-dvd-boost-1.51.0-fix.patch
+Patch1:         bombono-dvd-buildflags.patch
 
 BuildRequires:  adobe-source-libraries-devel
 BuildRequires:  boost-devel
@@ -41,7 +39,7 @@ Requires:       mjpegtools
 Provides:       bundled(boost-logging) = 0.22.7.20120126svn76686
 
 %global  boost_flags \\\
-    -DBOOST_SYSTEM_NO_DEPRECATED -DBOOST_FILESYSTEM_VERSION=2
+    -DBOOST_SYSTEM_NO_DEPRECATED -DBOOST_FILESYSTEM_VERSION=3
 %global warn_flags  \
     -Wno-reorder -Wno-unused-variable
 %global  scons       \
@@ -68,6 +66,8 @@ re-authoring by importing video from DVD discs is also supported.
 
 %prep
 %setup -q -n bombono-dvd
+%patch0 -p1
+%patch1 -p0
 sed -i '\;#![ ]*/usr/bin/env;d'  $(find . -name SCons\*)
 rm -r debian libs/boost-lib src/mlib/tests libs/mpeg2dec ./libs/asl/adobe
 
@@ -107,17 +107,14 @@ fi
 %{_mandir}/man1/*
 
 %changelog
-* Tue Aug 21 2012 Alec Leamas <alec@nowhere.com>  - 1.2.0-5.20120616gitcdab110.2
-- Rebuild for F-18
+* Fri Jun 15 2012 Alec Leamas <alec@nowhere.com> 1.2.0-6.20120615gitcdab110
+- Applying boost patch available as merge request at gitorious upstream.
+- Fixing build flags
 
-* Mon Jul 09 2012 Nicolas Chauvet <kwizart@gmail.com> - 1.2.0-4.20120616gitcdab110.2
-- Add ExclusiveArch - inherited from TBB
+* Fri Jun 15 2012 Alec Leamas <alec@nowhere.com> 1.2.0-5.20120615gitcdab110
+- Rebuilding for F-18
 
-* Tue Jun 26 2012 Nicolas Chauvet <kwizart@gmail.com> - 1.2.0-4.20120616gitcdab110.1
-- Rebuilt for FFmpeg
-
-
-* Sat Jun 16 2012 Alec Leamas <alec@nowhere.com> 1.2.0-4.20120616gitcdab110
+* Fri Jun 15 2012 Alec Leamas <alec@nowhere.com> 1.2.0-4.20120615gitcdab110
 - Updating to git HEAD, solving build problems w ffmpeg 11.1
 
 * Thu Apr 12 2012 Alec Leamas <alec@nowhere.com> 1.2.0-3.20120412gite9390e7
