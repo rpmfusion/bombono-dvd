@@ -13,7 +13,7 @@ Url:            http://www.bombono.org
 # git clone https://git.gitorious.org/bombono-dvd/bombono-dvd.git bombono-dvd
 # tag=.20120616gitcdab110; cd bombono-dvd;  git reset --hard ${tag##*git}; cd ..
 # tar czf bombono-dvd-1.2.0.20120616gitcdab110.tar.gz --exclude .git bombono-dvd
-Source:         bombono-dvd-%{version}-%{rel_nr}%{rel_tag}.tar.gz
+Source:         bombono-dvd-%{version}-%{rel_tag}.tar.gz
 
 # needs to match TBB - from adobe-source-libraries
 ExclusiveArch:  i686 x86_64 ia64
