@@ -42,7 +42,7 @@ Requires:       mjpegtools
 Provides:       bundled(boost-logging) = 0.22.7.20120126svn76686
 
 %global  boost_flags \\\
-    -DBOOST_SYSTEM_NO_DEPRECATED -DBOOST_FILESYSTEM_VERSION=2
+    -DBOOST_SYSTEM_NO_DEPRECATED -DBOOST_FILESYSTEM_VERSION=3
 %global warn_flags  \
     -Wno-reorder -Wno-unused-variable
 %global  scons       \
