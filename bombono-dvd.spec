@@ -1,5 +1,5 @@
 %global         rel_tag      .20120616gitcdab110
-%global         rel_nr       4
+%global         rel_nr       5
 
 Name:           bombono-dvd
 Version:        1.2.0
@@ -107,12 +107,16 @@ fi
 %{_mandir}/man1/*
 
 %changelog
+* Wed Oct 24 2012 Alec Leamas <leamas@nowhere.net>    - 1.2.0-5.20120616gitcdab110.2
+- Added patch for current boost available but not merged upstream.
+- Fixed build flags (new patch)
+- Removed insane release # from source filename.
+
 * Mon Jul 09 2012 Nicolas Chauvet <kwizart@gmail.com> - 1.2.0-4.20120616gitcdab110.2
 - Add ExclusiveArch - inherited from TBB
 
 * Tue Jun 26 2012 Nicolas Chauvet <kwizart@gmail.com> - 1.2.0-4.20120616gitcdab110.1
 - Rebuilt for FFmpeg
-
 
 * Sat Jun 16 2012 Alec Leamas <alec@nowhere.com> 1.2.0-4.20120616gitcdab110
 - Updating to git HEAD, solving build problems w ffmpeg 11.1
