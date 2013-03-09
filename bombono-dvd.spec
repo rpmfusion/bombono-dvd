@@ -1,8 +1,8 @@
-%global         rel_tag      .20120615gitcdab110
+#global         rel_tag      .20120615gitcdab110
 
 Name:           bombono-dvd
-Version:        1.2.0
-Release:        8%{?rel_tag}%{?dist}
+Version:        1.2.2
+Release:        1%{?rel_tag}%{?dist}
 Summary:        DVD authoring program with nice and clean GUI
                 # License breakdown in README.
 License:        GPLv2 and GPLv2+ and Boost and Python and LGPLv2+
@@ -12,9 +12,9 @@ Url:            http://www.bombono.org
 # git clone https://git.gitorious.org/bombono-dvd/bombono-dvd.git bombono-dvd
 # tag=.20120616gitcdab110; cd bombono-dvd;  git reset --hard ${tag##*git}; cd ..
 # tar czf bombono-dvd-1.2.0$tag.tar.gz --exclude .git bombono-dvd
-Source:         bombono-dvd-%{version}%{?rel_tag}.tar.gz
-Patch0:         bombono-dvd-boost-1.51.0-fix.patch
-Patch1:         bombono-dvd-buildflags.patch
+#Source:         bombono-dvd-%%{version}%%{?rel_tag}.tar.gz
+Source:         http://sourceforge.net/projects/bombono/files/bombono-dvd/1.2/bombono-dvd-1.2.2.tar.bz2
+Patch0:         filesys-include-path.patch
 
 # needs to match TBB - from adobe-source-libraries
 ExclusiveArch:  i686 x86_64 ia64
@@ -68,9 +68,10 @@ to folder, making an ISO-image or burning directly to DVD as well as
 re-authoring by importing video from DVD discs is also supported.
 
 %prep
-%setup -q -n bombono-dvd
+%setup -q 
+%if %{fedora} > 17
 %patch0 -p1
-%patch1 -p0
+%endif
 sed -i '\;#![ ]*/usr/bin/env;d'  $(find . -name SCons\*)
 rm -r debian libs/boost-lib src/mlib/tests libs/mpeg2dec ./libs/asl/adobe
 
@@ -110,6 +111,9 @@ fi
 %{_mandir}/man1/*
 
 %changelog
+* Sat Mar 9 2013 Alec Leamas <alec@nowhere.com> - 1.2.2-1
+- Rebuilt for new upstream release
+
 * Sat Nov 24 2012 Nicolas Chauvet <kwizart@gmail.com> - 1.2.0-8.20120615gitcdab110
 - Rebuilt for FFmpeg 1.0
 
