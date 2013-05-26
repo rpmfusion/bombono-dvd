@@ -2,7 +2,7 @@
 
 Name:           bombono-dvd
 Version:        1.2.2
-Release:        1%{?rel_tag}%{?dist}
+Release:        2%{?rel_tag}%{?dist}
 Summary:        DVD authoring program with nice and clean GUI
                 # License breakdown in README.
 License:        GPLv2 and GPLv2+ and Boost and Python and LGPLv2+
@@ -111,6 +111,9 @@ fi
 %{_mandir}/man1/*
 
 %changelog
+* Sun May 26 2013 Nicolas Chauvet <kwizart@gmail.com> - 1.2.2-2
+- Rebuilt for x264/FFmpeg
+
 * Sat Mar 9 2013 Alec Leamas <alec@nowhere.com> - 1.2.2-1
 - Rebuilt for new upstream release
 
