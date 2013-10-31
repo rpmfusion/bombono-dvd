@@ -2,7 +2,7 @@
 
 Name:           bombono-dvd
 Version:        1.2.2
-Release:        4%{?rel_tag}%{?dist}
+Release:        3%{?rel_tag}%{?dist}
 Summary:        DVD authoring program with nice and clean GUI
                 # License breakdown in README.
 License:        GPLv2 and GPLv2+ and Boost and Python and LGPLv2+
@@ -15,6 +15,8 @@ Url:            http://www.bombono.org
 #Source:         bombono-dvd-%%{version}%%{?rel_tag}.tar.gz
 Source:         http://sourceforge.net/projects/bombono/files/bombono-dvd/1.2/bombono-dvd-1.2.2.tar.bz2
 Patch0:         filesys-include-path.patch
+                # https://sourceforge.net/apps/trac/bombono/ticket/98
+Patch1:         0001-ffmpeg-has-renamed-CodecID-AVCodecID.patch
 
 # needs to match TBB - from adobe-source-libraries
 ExclusiveArch:  i686 x86_64 ia64
@@ -53,7 +55,7 @@ Provides:       bundled(boost-logging) = 0.22.7.20120126svn76686
     CC="%__cc"                                             \\\
     CXX="%__cxx"                                           \\\
     CFLAGS=""                                              \\\
-    CXXFLAGS="%{optflags} %{warn_flags} %{boost_flags}"    \\\
+    CPPFLAGS="%{optflags} %{warn_flags} %{boost_flags}"    \\\
     PREFIX=%{_prefix}                                      \\\
     TEST=false                                             \\\
     TEST_BUILD=false                                       \\\
@@ -68,9 +70,10 @@ to folder, making an ISO-image or burning directly to DVD as well as
 re-authoring by importing video from DVD discs is also supported.
 
 %prep
-%setup -q 
+%setup -q
 %if %{fedora} > 17
 %patch0 -p1
+%patch1 -p1
 %endif
 sed -i '\;#![ ]*/usr/bin/env;d'  $(find . -name SCons\*)
 rm -r debian libs/boost-lib src/mlib/tests libs/mpeg2dec ./libs/asl/adobe
@@ -111,11 +114,8 @@ fi
 %{_mandir}/man1/*
 
 %changelog
-* Wed Oct 02 2013 Nicolas Chauvet <kwizart@gmail.com> - 1.2.2-4
-- Rebuilt
-
-* Thu Aug 15 2013 Nicolas Chauvet <kwizart@gmail.com> - 1.2.2-3
-- Rebuilt for FFmpeg 2.0.x
+* Thu Oct 31 2013 Alec Leamas <leamas@nowhere.net> - 1.2.2-3
+- Build problems for f20, adding patch 0001-*.
 
 * Sun May 26 2013 Nicolas Chauvet <kwizart@gmail.com> - 1.2.2-2
 - Rebuilt for x264/FFmpeg
