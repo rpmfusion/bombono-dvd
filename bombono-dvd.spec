@@ -1,22 +1,20 @@
 #global         rel_tag      .20120615gitcdab110
 
 Name:           bombono-dvd
-Version:        1.2.2
-Release:        11%{?rel_tag}%{?dist}
+Version:        1.2.4
+Release:        1%{?rel_tag}%{?dist}
 Summary:        DVD authoring program with nice and clean GUI
                 # License breakdown in README.
 License:        GPLv2 and GPLv2+ and Boost and Python and LGPLv2+
 Group:          Applications/Productivity
 Url:            http://www.bombono.org
 # To create source tarball:
-# git clone https://git.gitorious.org/bombono-dvd/bombono-dvd.git bombono-dvd
+# git clone https://github.com/muravjov/bombono-dvd.git
 # tag=.20120616gitcdab110; cd bombono-dvd;  git reset --hard ${tag##*git}; cd ..
 # tar czf bombono-dvd-1.2.0$tag.tar.gz --exclude .git bombono-dvd
 #Source:         bombono-dvd-%%{version}%%{?rel_tag}.tar.gz
-Source:         http://sourceforge.net/projects/bombono/files/bombono-dvd/1.2/bombono-dvd-1.2.2.tar.bz2
+Source:         https://github.com/muravjov/bombono-dvd/archive/1.2.4.tar.gz
 Patch0:         filesys-include-path.patch
-                # https://sourceforge.net/apps/trac/bombono/ticket/98
-Patch1:         0001-ffmpeg-has-renamed-CodecID-AVCodecID.patch
 
 # needs to match TBB - from adobe-source-libraries
 ExclusiveArch:  i686 x86_64 ia64
@@ -73,7 +71,6 @@ re-authoring by importing video from DVD discs is also supported.
 %setup -q
 %if %{fedora} > 17
 %patch0 -p1
-%patch1 -p1
 %endif
 sed -i '\;#![ ]*/usr/bin/env;d'  $(find . -name SCons\*)
 rm -r debian libs/boost-lib src/mlib/tests libs/mpeg2dec ./libs/asl/adobe
@@ -114,6 +111,11 @@ fi
 %{_mandir}/man1/*
 
 %changelog
+* Thu Apr 14 2016 Marcin Zajaczkowski <mszpak ATT wp DOTT pl> - 1.2.4-1
+- Rebuilt for new upstream release
+- Remove ffmpeg CodeID->AVCodecID patch applied upstream
+- Fix bugus dates in changelog
+
 * Sun Oct 19 2014 Sérgio Basto <sergio@serjux.com> - 1.2.2-11
 - Rebuilt for FFmpeg 2.4.3
 
@@ -132,7 +134,7 @@ fi
 * Fri Dec 27 2013 leamas@nowhere.net - 1.2.2-6
 - Rebuild after F20 branching
 
-* Thu May 26 2013 Alec Leamas <leamas@nowhere.net> - 1.2.2-5
+* Sun May 26 2013 Alec Leamas <leamas@nowhere.net> - 1.2.2-5
 - Build problems for f20.
 
 * Sun May 26 2013 Nicolas Chauvet <kwizart@gmail.com> - 1.2.2-2
@@ -169,7 +171,7 @@ fi
 * Sun Apr 01 2012 Alec Leamas <alec@nowhere.com> 1.2.0-1.20120401git2278251
 - New version-release scheme
 - Minor fixes
-* Sat Mar 28 2012 Alec Leamas <alec@nowhere.com> 1.2.0.20120128gitf39d5d5-1
+* Wed Mar 28 2012 Alec Leamas <alec@nowhere.com> 1.2.0.20120128gitf39d5d5-1
 - Adding BR: adobe-source-libraries-devel
 - Removing copyright notices after email discussion with Ilya.
 - Updating to latest git
@@ -194,7 +196,7 @@ fi
 - Restoring execute permissions on some scripts in %%prep
 * Fri Jan 6 2012 Alec Leamas <alec@nowhere.com>              1.2.0-2
 - Using manpages from debian dir, remove debian stuff.
-* Tue Jan 4 2012 Alec Leamas <alec@nowhere.com>              1.2.0-1
+* Wed Jan 4 2012 Alec Leamas <alec@nowhere.com>              1.2.0-1
 - First attempt to modify Ilya Murav'jo's spec file for Fedora.
 - Adding changelog
 - Added find_lang handling of .mo files.
