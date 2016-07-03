@@ -15,7 +15,6 @@ Url:            http://www.bombono.org
 #Source:         bombono-dvd-%%{version}%%{?rel_tag}.tar.gz
 Source:         http://sourceforge.net/projects/bombono/files/bombono-dvd/1.2/bombono-dvd-1.2.2.tar.bz2
 Patch0:         filesys-include-path.patch
-                # https://sourceforge.net/apps/trac/bombono/ticket/98
 
 # Upstream patches
 Patch1:         0003-fixes-for-ffmpeg-3.0.1.patch
