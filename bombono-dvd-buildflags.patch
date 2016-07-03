@@ -1,9 +1,0 @@
---- SConstruct.ORG	2012-10-23 09:08:29.822511600 +0200
-+++ SConstruct	2012-10-23 09:08:45.801184175 +0200
-@@ -58,5 +58,5 @@
- common_warn_flags = []
- cxx_warn_flags    = []
--debug_flags   = ['-g', '-O0']
-+debug_flags   = ['-g']
- release_flags = ['-O2']
- defines       = []

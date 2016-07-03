@@ -1,0 +1,125 @@
+From 9d40d4501cd104e7b0c52d28eeeb0f5c2fd4b13c Mon Sep 17 00:00:00 2001
+From: Ilya Murav'jov <muravev@yandex.ru>
+Date: Sat, 9 Apr 2016 11:52:11 +0300
+Subject: [PATCH 05/12] fix for CXX11 & Boost
+
+---
+ src/mgui/author/script.cpp         | 2 +-
+ src/mgui/project/add.cpp           | 4 ++--
+ src/mgui/project/media-browser.cpp | 6 +++---
+ src/mgui/project/menu-actions.cpp  | 6 ++++--
+ src/mgui/project/thumbnail.cpp     | 2 +-
+ src/mlib/ptr.h                     | 5 +++++
+ 6 files changed, 16 insertions(+), 9 deletions(-)
+
+diff --git a/src/mgui/author/script.cpp b/src/mgui/author/script.cpp
+index 526b244..ccfd32f 100644
+--- a/src/mgui/author/script.cpp
++++ b/src/mgui/author/script.cpp
+@@ -279,7 +279,7 @@ static void AddPostCmd(xmlpp::Element* pgc_node, MediaItem mi)
+ 
+     ASSERT_RTL( vi || mn );
+     // VTS domain
+-    bool is_video = vi;
++    bool is_video = bool(vi);
+     const PostAction& pa = is_video ? vi->PAction() : mn->MtnData().pAct ;
+ 
+     std::string jnt_cmd;
+diff --git a/src/mgui/project/add.cpp b/src/mgui/project/add.cpp
+index cb8c792..9454578 100644
+--- a/src/mgui/project/add.cpp
++++ b/src/mgui/project/add.cpp
+@@ -415,7 +415,7 @@ void TryAddMediaQuiet(const std::string& fname, const std::string& desc)
+ {
+     std::string err_str;
+     Gtk::TreePath pth;
+-    bool res = TryAddMedia(fname.c_str(), pth, err_str);
++    bool res = bool(TryAddMedia(fname.c_str(), pth, err_str));
+     if( !res )
+     {    
+         LOG_ERR << "TryAddMediaQuiet error (" << desc << "): " << err_str << io::endl;
+@@ -538,7 +538,7 @@ void TryAddMedias(const Str::List& paths, MediaBrowser& brw,
+             continue;
+         }
+ 
+-        bool res = TryAddMedia(fpath.c_str(), brw_pth, err_str, insert_after);
++        bool res = bool(TryAddMedia(fpath.c_str(), brw_pth, err_str, insert_after));
+         if( res )
+         {
+             insert_after = true; // вставляем друг за другом
+diff --git a/src/mgui/project/media-browser.cpp b/src/mgui/project/media-browser.cpp
+index ebe10a1..3daaa3e 100644
+--- a/src/mgui/project/media-browser.cpp
++++ b/src/mgui/project/media-browser.cpp
+@@ -854,7 +854,7 @@ static void OnMBButtonPress(ObjectBrowser& brw, MediaItem mi, GdkEventButton* ev
+     Gtk::MenuItem& ea_itm = AppendMI(mn, NewManaged<Gtk::MenuItem>(_("End Action")));
+     // только видео
+     VideoItem vi = IsVideo(mi);
+-    if( SetEnabled(ea_itm, vi) )
++    if( SetEnabled(ea_itm, bool(vi)) )
+         ea_itm.set_submenu(EndActionMenuBld(vi->PAction(), boost::function_identity,
+                                             VideoAddConstantChoice).Create());
+ 
+@@ -863,10 +863,10 @@ static void OnMBButtonPress(ObjectBrowser& brw, MediaItem mi, GdkEventButton* ev
+     // калькулятор
+     AddDialogItem(mn, DialogParams(_("Bitrate Calculator"), bb::bind(&RunBitrateCalc, vi, _1, b::ref(brw)), 
+                                    350, &brw), tr_enabled);
+-    AddEnabledItem(mn, _("Reason For Transcoding"), bb::bind(&ShowDVDCompliantStatus, vi), vi);
++    AddEnabledItem(mn, _("Reason For Transcoding"), bb::bind(&ShowDVDCompliantStatus, vi), bool(vi));
+     AppendSeparator(mn);
+ 
+-    AddDialogItem(mn, SubtitlesDialog(vi, &brw), vi);
++    AddDialogItem(mn, SubtitlesDialog(vi, &brw), bool(vi));
+ 
+     Popup(mn, event, true);
+ }
+diff --git a/src/mgui/project/menu-actions.cpp b/src/mgui/project/menu-actions.cpp
+index 95636de..7da1ece 100644
+--- a/src/mgui/project/menu-actions.cpp
++++ b/src/mgui/project/menu-actions.cpp
+@@ -197,9 +197,11 @@ void UpdateMenuRegionObject(Comp::Object* obj, const Point& menu_sz, RectListRgn
+ void EraseLinkedMenus(MenuPack& mp)
+ {
+     CanvasBuf& cb = mp.thRgn.GetCanvasBuf();
++    const Point& menu_sz = cb.Size();
++    RectListRgn& lst = cb.RenderList();
+     ForeachLinked(mp.Owner(), bb::bind(&UpdateMenuRegionObject, 
+-                                       _1, boost::cref(cb.Size()), 
+-                                       boost::ref(cb.RenderList())));
++                                       _1, boost::cref(menu_sz),
++                                       boost::ref(lst)));
+ }
+ 
+ void RegionEraserVis::ProcessImpl(bool exceed)
+diff --git a/src/mgui/project/thumbnail.cpp b/src/mgui/project/thumbnail.cpp
+index d4f6411..4311399 100644
+--- a/src/mgui/project/thumbnail.cpp
++++ b/src/mgui/project/thumbnail.cpp
+@@ -410,7 +410,7 @@ void StampFPEmblem(MediaItem mi, RefPtr<Gdk::Pixbuf> pix)
+ {
+     if( AData().FirstPlayItem() != mi )
+         return;
+-    bool is_menu = IsMenu(mi);
++    bool is_menu = bool(IsMenu(mi));
+     RefPtr<Gdk::Pixbuf> emblem = GetCheckEmblem(pix, is_menu 
+                                                 ? "copy-n-paste/HelixPlayer_Activity-watch-listen/28.png" 
+                                                 : "copy-n-paste/HelixPlayer_Activity-watch-listen/16.png");
+diff --git a/src/mlib/ptr.h b/src/mlib/ptr.h
+index 4891fa1..9d72615 100644
+--- a/src/mlib/ptr.h
++++ b/src/mlib/ptr.h
+@@ -153,6 +153,11 @@ class shared: public boost::shared_ptr<T>
+             return *this;
+         }
+ 
++        operator bool () const
++        {
++            return this->get() != 0;
++        }
++
+ #if 0
+         // кострукторы приведения
+         template<class Y>
+-- 
+2.7.4
+

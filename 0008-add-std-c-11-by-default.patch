@@ -1,0 +1,26 @@
+From b964f9e9af92047f4e884d2eb2347b870fbf086e Mon Sep 17 00:00:00 2001
+From: Ilya Murav'jov <muravev@yandex.ru>
+Date: Sat, 9 Apr 2016 13:11:12 +0300
+Subject: [PATCH 08/12] add -std=c++11 by default
+
+---
+ SConstruct | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/SConstruct b/SConstruct
+index 38c3acd..d893f63 100644
+--- a/SConstruct
++++ b/SConstruct
+@@ -69,7 +69,8 @@ def CalcCommonFlags():
+     global common_warn_flags, cxx_warn_flags, debug_flags, defines
+     if BV.IsGccCompiler():
+         # GCC
+-        common_warn_flags = ['-ansi']
++        # -std=c++11 is required by sigc++, shit
++        common_warn_flags = ['-ansi', '-std=c++11']
+         # -Wno-reorder - not to warn if not accurate order in ctor (let compiler do!)
+         # :TODO: why 
+         #   CXXCOM = $CXX -o $TARGET -c $CXXFLAGS $CCFLAGS ...
+-- 
+2.7.4
+

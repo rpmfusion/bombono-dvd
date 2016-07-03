@@ -2,7 +2,7 @@
 
 Name:           bombono-dvd
 Version:        1.2.2
-Release:        11%{?rel_tag}%{?dist}
+Release:        12%{?rel_tag}%{?dist}
 Summary:        DVD authoring program with nice and clean GUI
                 # License breakdown in README.
 License:        GPLv2 and GPLv2+ and Boost and Python and LGPLv2+
@@ -16,7 +16,14 @@ Url:            http://www.bombono.org
 Source:         http://sourceforge.net/projects/bombono/files/bombono-dvd/1.2/bombono-dvd-1.2.2.tar.bz2
 Patch0:         filesys-include-path.patch
                 # https://sourceforge.net/apps/trac/bombono/ticket/98
-Patch1:         0001-ffmpeg-has-renamed-CodecID-AVCodecID.patch
+
+# Upstream patches
+Patch1:         0003-fixes-for-ffmpeg-3.0.1.patch
+Patch2:         0005-fix-for-CXX11-Boost.patch
+Patch3:         0006-fix-for-old-ffmpeg.patch
+Patch4:         0007-fixes.patch
+Patch5:         0008-add-std-c-11-by-default.patch
+Patch6:         0009-deprecation-warning-hiding-auto_ptr.patch
 
 # needs to match TBB - from adobe-source-libraries
 ExclusiveArch:  i686 x86_64 ia64
@@ -71,10 +78,13 @@ re-authoring by importing video from DVD discs is also supported.
 
 %prep
 %setup -q
-%if %{fedora} > 17
 %patch0 -p1
 %patch1 -p1
-%endif
+%patch2 -p1
+%patch3 -p1
+%patch4 -p1
+%patch5 -p1
+%patch6 -p1
 sed -i '\;#![ ]*/usr/bin/env;d'  $(find . -name SCons\*)
 rm -r debian libs/boost-lib src/mlib/tests libs/mpeg2dec ./libs/asl/adobe
 
@@ -92,21 +102,22 @@ desktop-file-validate \
 %postun
 /usr/bin/update-desktop-database &> /dev/null || :
 if [ $1 -eq 0 ] ; then
-    /bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null
-    /usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
+    /bin/touch --no-create %{_datadir}/icons/hicolor &> /dev/null
+    /usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &> /dev/null || :
 fi
 
 %post
 /usr/bin/update-desktop-database  &> /dev/null || :
-/bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
+/bin/touch --no-create %{_datadir}/icons/hicolor &> /dev/null || :
 
 %posttrans
-/usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
+/usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &> /dev/null || :
 
 %files -f  bombono-dvd.lang
-%doc README COPYING docs
+%doc README docs
+%license COPYING
 %{_bindir}/*
-%{_datadir}/bombono
+%{_datadir}/bombono/
 %{_datadir}/applications/bombono-dvd.desktop
 %{_datadir}/pixmaps/bombono-dvd.png
 %{_datadir}/icons/hicolor/*/apps/bombono-dvd.png
@@ -114,6 +125,9 @@ fi
 %{_mandir}/man1/*
 
 %changelog
+* Sun Jul 03 2016 Leigh Scott <leigh123linux@googlemail.com> - 1.2.2-12
+- patch for boost, ffmpeg and c++11 changes
+
 * Sun Oct 19 2014 Sérgio Basto <sergio@serjux.com> - 1.2.2-11
 - Rebuilt for FFmpeg 2.4.3
 
