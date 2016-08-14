@@ -1,8 +1,8 @@
 #global         rel_tag      .20120615gitcdab110
 
 Name:           bombono-dvd
-Version:        1.2.2
-Release:        14%{?rel_tag}%{?dist}
+Version:        1.2.4
+Release:        1%{?rel_tag}%{?dist}
 Summary:        DVD authoring program with nice and clean GUI
                 # License breakdown in README.
 License:        GPLv2 and GPLv2+ and Boost and Python and LGPLv2+
@@ -13,16 +13,8 @@ Url:            http://www.bombono.org
 # tag=.20120616gitcdab110; cd bombono-dvd;  git reset --hard ${tag##*git}; cd ..
 # tar czf bombono-dvd-1.2.0$tag.tar.gz --exclude .git bombono-dvd
 #Source:         bombono-dvd-%%{version}%%{?rel_tag}.tar.gz
-Source:         http://sourceforge.net/projects/bombono/files/bombono-dvd/1.2/bombono-dvd-1.2.2.tar.bz2
+Source:         https://github.com/muravjov/bombono-dvd/archive/%{version}.tar.gz#/%{name}-%{version}.tar.gz
 Patch0:         filesys-include-path.patch
-
-# Upstream patches
-Patch1:         0003-fixes-for-ffmpeg-3.0.1.patch
-Patch2:         0005-fix-for-CXX11-Boost.patch
-Patch3:         0006-fix-for-old-ffmpeg.patch
-Patch4:         0007-fixes.patch
-Patch5:         0008-add-std-c-11-by-default.patch
-Patch6:         0009-deprecation-warning-hiding-auto_ptr.patch
 
 # needs to match TBB - from adobe-source-libraries
 ExclusiveArch:  i686 x86_64 ia64
@@ -78,12 +70,7 @@ re-authoring by importing video from DVD discs is also supported.
 %prep
 %setup -q
 %patch0 -p1
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
-%patch4 -p1
-%patch5 -p1
-%patch6 -p1
+
 sed -i '\;#![ ]*/usr/bin/env;d'  $(find . -name SCons\*)
 rm -r debian libs/boost-lib src/mlib/tests libs/mpeg2dec ./libs/asl/adobe
 
@@ -124,6 +111,9 @@ fi
 %{_mandir}/man1/*
 
 %changelog
+* Sun Aug 14 2016 Leigh Scott <leigh123linux@googlemail.com> - 1.2.4-1
+- Update to 1.2.4 release
+
 * Sat Jul 30 2016 Julian Sikorski <belegdol@fedoraproject.org> - 1.2.2-14
 - Rebuilt for ffmpeg-3.1.1
 
@@ -151,7 +141,7 @@ fi
 * Fri Dec 27 2013 leamas@nowhere.net - 1.2.2-6
 - Rebuild after F20 branching
 
-* Thu May 26 2013 Alec Leamas <leamas@nowhere.net> - 1.2.2-5
+* Sun May 26 2013 Alec Leamas <leamas@nowhere.net> - 1.2.2-5
 - Build problems for f20.
 
 * Sun May 26 2013 Nicolas Chauvet <kwizart@gmail.com> - 1.2.2-2
@@ -188,32 +178,40 @@ fi
 * Sun Apr 01 2012 Alec Leamas <alec@nowhere.com> 1.2.0-1.20120401git2278251
 - New version-release scheme
 - Minor fixes
-* Sat Mar 28 2012 Alec Leamas <alec@nowhere.com> 1.2.0.20120128gitf39d5d5-1
+
+* Wed Mar 28 2012 Alec Leamas <alec@nowhere.com> 1.2.0.20120128gitf39d5d5-1
 - Adding BR: adobe-source-libraries-devel
 - Removing copyright notices after email discussion with Ilya.
 - Updating to latest git
 - The upstream version unbundles adobe-source-libraries
+
 * Sat Jan 28 2012 Alec Leamas <alec@nowhere.com> 1.2.0.20120128gitf39d5d5-1
 - Adding  bundling exception for boost-logging.
+
 * Wed Jan 25 2012 Alec Leamas <alec@nowhere.com> 1.2.0.20120125git3f4adbb-1
 - Removing irrelevant files in docs/
 - Updating deps to reflect bb7f789 "twolame is optional..."
 - Removing bundled libmpeg2
+
 * Sat Jan 21 2012 Alec Leamas <alec@nowhere.com>   1.2.0.20101210git2840c3a-1
 - Updating to latest git source. Many patches accepted.
 - Removing %%defattr.
+
 * Sat Jan 14 2012 Alec Leamas <alec@nowhere.com>             1.2.0-4
 - Refactoring scons parameters to rpm macro %%scons.
 - Adding virtual provide for bundled mpeg lib.
 - Use of Boost license, was BSD, handling license file.
+
 * Sun Jan 8 2012 Alec Leamas <alec@nowhere.com>              1.2.0-3
 - Using external boost lib, removing bundled one.
 - Feeding standard rpm build flags to scons.
 - Cleaning up post/posttrans snippets and deps.
 - Restoring execute permissions on some scripts in %%prep
+
 * Fri Jan 6 2012 Alec Leamas <alec@nowhere.com>              1.2.0-2
 - Using manpages from debian dir, remove debian stuff.
-* Tue Jan 4 2012 Alec Leamas <alec@nowhere.com>              1.2.0-1
+
+* Wed Jan 4 2012 Alec Leamas <alec@nowhere.com>              1.2.0-1
 - First attempt to modify Ilya Murav'jo's spec file for Fedora.
 - Adding changelog
 - Added find_lang handling of .mo files.
@@ -225,7 +223,7 @@ fi
 - Modified arguments to scons build and install.
 - Fixed various rpmlint warnings
 - Adjusted dependencies after mock build test.
+
 * Mon Jan 1 2007  Ilya Murav'jov <muravev@yandex.ru>         1.0.2-0
 - Faked entry by Alec leamas to reflect initial packager.
 
-# vim: set expandtab ts=4 sw=4:
