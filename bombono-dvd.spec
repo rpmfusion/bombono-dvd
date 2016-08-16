@@ -2,7 +2,7 @@
 
 Name:           bombono-dvd
 Version:        1.2.4
-Release:        1%{?rel_tag}%{?dist}
+Release:        2%{?rel_tag}%{?dist}
 Summary:        DVD authoring program with nice and clean GUI
                 # License breakdown in README.
 License:        GPLv2 and GPLv2+ and Boost and Python and LGPLv2+
@@ -46,14 +46,15 @@ Provides:       bundled(boost-logging) = 0.22.7.20120126svn76686
 %global warn_flags  \
     -Wno-reorder -Wno-unused-variable
 %global  scons       \
-    scons  %{?jobs:-j%{jobs}}                              \\\
+    scons  %{?_smp_mflags}                                 \\\
     BUILD_CFG=debug                                        \\\
     BUILD_BRIEF=false                                      \\\
     BUILD_QUICK=false                                      \\\
     CC="%__cc"                                             \\\
     CXX="%__cxx"                                           \\\
-    CFLAGS=""                                              \\\
-    CPPFLAGS="%{optflags} %{warn_flags} %{boost_flags}"    \\\
+    CFLAGS="${RPM_OPT_FLAGS}"                              \\\
+    CPPFLAGS="%{warn_flags} %{boost_flags}"                \\\
+    LDFLAGS="${RPM_LD_FLAGS}"                              \\\
     PREFIX=%{_prefix}                                      \\\
     TEST=false                                             \\\
     TEST_BUILD=false                                       \\\
@@ -111,6 +112,9 @@ fi
 %{_mandir}/man1/*
 
 %changelog
+* Tue Aug 16 2016 Leigh Scott <leigh123linux@googlemail.com> - 1.2.4-2
+- Make the build hardened
+
 * Sun Aug 14 2016 Leigh Scott <leigh123linux@googlemail.com> - 1.2.4-1
 - Update to 1.2.4 release
 
