@@ -2,7 +2,7 @@
 
 Name:           bombono-dvd
 Version:        1.2.4
-Release:        2%{?rel_tag}%{?dist}
+Release:        3%{?rel_tag}%{?dist}
 Summary:        DVD authoring program with nice and clean GUI
                 # License breakdown in README.
 License:        GPLv2 and GPLv2+ and Boost and Python and LGPLv2+
@@ -112,6 +112,9 @@ fi
 %{_mandir}/man1/*
 
 %changelog
+* Sat Mar 18 2017 RPM Fusion Release Engineering <kwizart@rpmfusion.org> - 1.2.4-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
+
 * Tue Aug 16 2016 Leigh Scott <leigh123linux@googlemail.com> - 1.2.4-2
 - Make the build hardened
 
