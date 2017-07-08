@@ -1,20 +1,13 @@
-#global         rel_tag      .20120615gitcdab110
-
 Name:           bombono-dvd
 Version:        1.2.4
-Release:        3%{?rel_tag}%{?dist}
+Release:        5%{?dist}
 Summary:        DVD authoring program with nice and clean GUI
                 # License breakdown in README.
 License:        GPLv2 and GPLv2+ and Boost and Python and LGPLv2+
-Group:          Applications/Productivity
-Url:            http://www.bombono.org
-# To create source tarball:
-# git clone https://git.gitorious.org/bombono-dvd/bombono-dvd.git bombono-dvd
-# tag=.20120616gitcdab110; cd bombono-dvd;  git reset --hard ${tag##*git}; cd ..
-# tar czf bombono-dvd-1.2.0$tag.tar.gz --exclude .git bombono-dvd
-#Source:         bombono-dvd-%%{version}%%{?rel_tag}.tar.gz
-Source:         https://github.com/muravjov/bombono-dvd/archive/%{version}.tar.gz#/%{name}-%{version}.tar.gz
+URL:            https://github.com/muravjov/bombono-dvd
+Source0:        %{url}/archive/%{version}.tar.gz#/%{name}-%{version}.tar.gz
 Patch0:         filesys-include-path.patch
+Patch1:         %{url}/pull/15.patch#/%{version}-ftbfs-fix-gcc-7-boost-1.64.patch
 
 # needs to match TBB - from adobe-source-libraries
 ExclusiveArch:  i686 x86_64 ia64
@@ -44,7 +37,7 @@ Provides:       bundled(boost-logging) = 0.22.7.20120126svn76686
 %global  boost_flags \\\
     -DBOOST_SYSTEM_NO_DEPRECATED -DBOOST_FILESYSTEM_VERSION=3
 %global warn_flags  \
-    -Wno-reorder -Wno-unused-variable
+    -Wno-unused-variable
 %global  scons       \
     scons  %{?_smp_mflags}                                 \\\
     BUILD_CFG=debug                                        \\\
@@ -69,10 +62,11 @@ to folder, making an ISO-image or burning directly to DVD as well as
 re-authoring by importing video from DVD discs is also supported.
 
 %prep
-%setup -q
-%patch0 -p1
+%autosetup -p1
 
-sed -i '\;#![ ]*/usr/bin/env;d'  $(find . -name SCons\*)
+sed -i -e 's@#!/usr/bin/env python@#!/usr/bin/python2@g'  $(find . -name SCons\*) \
+ resources/scons_authoring/menu_SConscript \
+ resources/scons_authoring/ADVD.py
 rm -r debian libs/boost-lib src/mlib/tests libs/mpeg2dec ./libs/asl/adobe
 
 %build
@@ -82,19 +76,19 @@ rm -r debian libs/boost-lib src/mlib/tests libs/mpeg2dec ./libs/asl/adobe
 rm config.opts
 %scons DESTDIR=%{buildroot} install
 rm -rf docs/man docs/TechTasks docs/Atom.planner
-%find_lang %{name}
+
 desktop-file-validate \
     %{buildroot}%{_datadir}/applications/bombono-dvd.desktop
 
+%find_lang %{name}
+
 %postun
-/usr/bin/update-desktop-database &> /dev/null || :
 if [ $1 -eq 0 ] ; then
     /bin/touch --no-create %{_datadir}/icons/hicolor &> /dev/null
     /usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &> /dev/null || :
 fi
 
 %post
-/usr/bin/update-desktop-database  &> /dev/null || :
 /bin/touch --no-create %{_datadir}/icons/hicolor &> /dev/null || :
 
 %posttrans
@@ -112,6 +106,14 @@ fi
 %{_mandir}/man1/*
 
 %changelog
+* Sat Jul 08 2017 Leigh Scott <leigh123linux@googlemail.com> - 1.2.4-5
+- Clean up spec file and fix rpmlint errors
+- Change url to github
+- Pull patch from last commit directly
+
+* Sat Jul 8 2017 Link Dupont <link.dupont@gmail.com> - 1.2.4-4
+- patch for boost, g++ and ffmpeg changes
+
 * Sat Mar 18 2017 RPM Fusion Release Engineering <kwizart@rpmfusion.org> - 1.2.4-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
 
