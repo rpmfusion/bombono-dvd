@@ -1,6 +1,6 @@
 Name:           bombono-dvd
 Version:        1.2.4
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        DVD authoring program with nice and clean GUI
                 # License breakdown in README.
 License:        GPLv2 and GPLv2+ and Boost and Python and LGPLv2+
@@ -82,18 +82,6 @@ desktop-file-validate \
 
 %find_lang %{name}
 
-%postun
-if [ $1 -eq 0 ] ; then
-    /bin/touch --no-create %{_datadir}/icons/hicolor &> /dev/null
-    /usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &> /dev/null || :
-fi
-
-%post
-/bin/touch --no-create %{_datadir}/icons/hicolor &> /dev/null || :
-
-%posttrans
-/usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &> /dev/null || :
-
 %files -f  bombono-dvd.lang
 %doc README docs
 %license COPYING
@@ -106,6 +94,10 @@ fi
 %{_mandir}/man1/*
 
 %changelog
+* Fri Feb 02 2018 Leigh Scott <leigh123linux@googlemail.com> - 1.2.4-8
+- Rebuild for boost-1.66
+- Remove scriptlets
+
 * Thu Jan 18 2018 Leigh Scott <leigh123linux@googlemail.com> - 1.2.4-7
 - Rebuilt for ffmpeg-3.5 git
 
