@@ -23,7 +23,7 @@ BuildRequires:  libstdc++-devel
 BuildRequires:  libxml++-devel
 BuildRequires:  mjpegtools-devel
 BuildRequires:  pkgconfig
-BuildRequires:  scons
+BuildRequires:  python2-scons
 Requires:       dvd+rw-tools
 Requires:       dvdauthor
 Requires:       enca
